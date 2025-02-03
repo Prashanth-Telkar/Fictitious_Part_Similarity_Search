@@ -74,12 +74,17 @@ The chatbot uses the part descriptions and their computed similarities to provid
 
 ## How to Run the Project
 
-### Step 1: UnZip the file
-UnZip this file in your local machine. 
+### Step 1: Clone the repository
+Clone this repository in your local machine. 
+```
+git clone <repository_url>
+```
 
 ### Step 2: Install Dependencies
 Make sure you have Python 3.x installed, and then install the required dependencies using pip:
+```
 pip install -r requirements.txt
+```
 
 ### Step 3: Prepare the Dataset
 Place your Parts.csv file in the parts_data/ folder.
@@ -87,12 +92,16 @@ The file should contain at least DESCRIPTION and ID column and some other column
 
 ### Step 4: Running the Main Script
 Run the main script to calculate similar parts using your preferred method (TF-IDF, Word2Vec, or Sentence-BERT):
+```
 python main.py
+```
 You can see the results in the results_similar_parts folder. This contains the list of similar parts for each part in the given Parts.csv
 
 ### Step 5: Run the App : Fictitious Parts Similarity Search Chat-bot
 Change the directory to /chat_bot folder.
+```
 Run the Streamlit app with the following command:
 streamlit run part_similarity_chatbot.py
+```
 
 This will start the Streamlit application, which you can access in your browser at http://localhost:8501.
