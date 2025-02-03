@@ -99,8 +99,8 @@ You can see the results in the results_similar_parts folder. This contains the l
 
 ### Step 5: Run the App : Fictitious Parts Similarity Search Chat-bot
 Change the directory to /chat_bot folder.
-```
 Run the Streamlit app with the following command:
+```
 streamlit run part_similarity_chatbot.py
 ```
 
