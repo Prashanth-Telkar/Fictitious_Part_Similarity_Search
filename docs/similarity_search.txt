@@ -1,0 +1,132 @@
+## Project Documentation: Fictitious Parts Similarity Search
+
+### Objective:
+The goal of this project is to identify five alternative parts to a provided fictitious part from a dataset based on their descriptions. 
+Three methods were used to determine similarity: **Cosine Similarity with TF-IDF**, **Word2Vec**, and **Sentence-BERT**. 
+Each method was implemented and evaluated for its effectiveness in finding similar parts, considering both the **semantic accuracy** 
+and **computational efficiency** of the solution.
+
+---
+
+### 1. **Cosine Similarity with TF-IDF (Term Frequency-Inverse Document Frequency)**
+
+#### Why TF-IDF was used:
+The TF-IDF approach is one of the simplest methods for calculating the similarity between part descriptions. It works by representing each part 
+description as a **vector**, where each dimension corresponds to a specific term (word) in the corpus. The **TF** measures how often a word appears 
+in a document, and the **IDF** adjusts for the frequency of the word across the entire dataset. The higher the TF-IDF score, the more important a 
+term is in the specific part description.
+
+The similarity between two parts is calculated using **cosine similarity**, which measures the cosine of the angle between their TF-IDF vectors. 
+A smaller angle (closer to 1) indicates greater similarity.
+
+#### Challenges:
+- **Limited Semantic Understanding**: TF-IDF is a bag-of-words model, meaning it does not account for the meaning of words in context. 
+  For example, the similarity between the words "plastic" and "polystyrene" may not be captured well, even though both are related materials.
+- **Handling Synonyms and Context**: Words like "high voltage" and "HV" may not be recognized as similar, leading to less accurate similarity measures.
+
+#### Computational Considerations:
+- **Speed**: TF-IDF is relatively fast compared to more advanced methods, as it involves basic vector space models and does not require heavy computations 
+             like deep learning-based methods.
+- **Memory Usage**: TF-IDF matrices can grow large, especially if the vocabulary is expansive. For a local machine with limited memory, this could be a constraint.
+
+#### Drawbacks:
+- **Lack of Contextual Understanding**: This method relies heavily on the frequency of keywords and does not understand the meaning behind words. 
+  For instance, "fast moving" and "quick response" might be similar in context but would not be captured as such by TF-IDF.
+- **Scaling Issues**: With a growing dataset, the TF-IDF matrix becomes increasingly memory-intensive.
+
+---
+
+### 2. **Word Embeddings (Word2Vec - word2vec-google-news-300)**
+
+#### Why Word2Vec was used:
+Word2Vec is a more sophisticated approach that leverages a **neural network** to learn vector representations of words, capturing **semantic relationships** 
+between words. It can distinguish between synonyms, antonyms, and related concepts based on the context in which words appear. For example, it would capture 
+that "electric" and "power" are related, and "plastic" and "rubber" are more similar than "plastic" and "stone".
+
+Word2Vec’s ability to map words to dense vectors allows for **semantic-based similarity calculations** between parts, unlike TF-IDF, which only considers word occurrence.
+
+#### Challenges:
+- **Training Word2Vec**: Although you can use pre-trained Word2Vec models, training your own Word2Vec model on a large dataset is computationally expensive 
+                         and time-consuming. For this project, pre-trained embeddings were likely used to avoid training from scratch.
+- **Out of Vocabulary (OOV) Words**: Words that do not appear in the pre-trained embeddings will result in missing vector representations, affecting the 
+                                     similarity computation.
+
+#### Computational Considerations:
+- **Speed**: Word2Vec is faster than transformer-based models but slower than TF-IDF due to the extra computation required to retrieve and use pre-trained embeddings.
+- **Memory Usage**: Word2Vec embeddings are more compact than TF-IDF matrices because each word is represented by a fixed-length vector, but still require significant 
+                    memory if the vocabulary is large.
+
+#### Drawbacks:
+- **Contextual Limitation**: Word2Vec captures semantic similarity between words but doesn’t handle polysemy (words that have multiple meanings) or word senses as 
+                             well as more modern methods like BERT.
+- **OOV Words**: If the dataset contains terms not present in the pre-trained embeddings, those words may not be represented correctly, affecting the similarity 
+                 computation.
+
+---
+
+### 3. **Transformer-based Embeddings (Sentence-BERT - GPT-2)**
+
+#### Why Sentence-BERT was used:
+**Sentence-BERT** (based on the BERT architecture) is a state-of-the-art method that uses a **transformer-based model** to generate context-aware embeddings for whole 
+                  sentences or descriptions. Unlike Word2Vec, which generates word-level embeddings, Sentence-BERT produces embeddings that capture the meaning 
+                  of an entire description, considering both **context** and **syntax**. The model is fine-tuned for sentence similarity tasks and can therefore 
+                  generate more accurate similarity results.
+
+For this project, the **all-MiniLM-L6-v2** model was chosen due to its small size, speed, and effectiveness for many sentence similarity tasks.
+
+#### Challenges:
+- **Resource Intensity**: Transformer-based models are **memory-intensive** and require **GPU** acceleration for efficient processing, which could be a constraint 
+                          when running locally with limited resources.
+- **Computational Time**: While much more accurate than TF-IDF and Word2Vec, transformer models are computationally expensive. Generating embeddings for large 
+                          datasets or querying a large number of parts can be slow on a local machine without sufficient resources (e.g., GPU support).
+- **Large Model Size**: The model itself can be quite large, requiring significant disk space and memory during inference.
+
+#### Computational Considerations:
+- **Speed**: Sentence-BERT is slower than both TF-IDF and Word2Vec due to the complexity of transformer models. Running the model for large datasets or queries 
+             can take a significant amount of time.
+- **Memory Usage**: The model's memory usage is much higher than TF-IDF and Word2Vec due to the large size of the embeddings it generates for each part description.
+
+#### Drawbacks:
+- **Computational Cost**: Requires powerful hardware for fast inference, and can be slow when using a CPU or in the absence of a GPU.
+- **Overkill for Small Datasets**: For small datasets, the benefits of using a transformer model may not justify the computational expense, making simpler methods 
+                                   like TF-IDF or Word2Vec more efficient.
+
+---
+
+### Comparison and Best Method:
+
+#### **TF-IDF**:
+- **Strengths**: Fast and easy to implement; low computational cost.
+- **Weaknesses**: Does not understand context or semantics; limited accuracy for complex part descriptions.
+
+#### **Word2Vec**:
+- **Strengths**: Captures semantic similarity better than TF-IDF; relatively fast.
+- **Weaknesses**: Still does not capture context as well as transformer models; suffers from OOV problems.
+
+#### **Sentence-BERT**:
+- **Strengths**: Best at capturing the full meaning of part descriptions; produces highly accurate similarity measures; understands context and word meaning.
+- **Weaknesses**: Computationally expensive; requires more memory and time, especially when working with large datasets.
+
+### Best Method:
+**Sentence-BERT** is the most accurate and robust method for this use case, as it generates high-quality, context-aware embeddings that capture the true meaning of 
+part descriptions. While it is computationally expensive, the accuracy gains justify its use in this scenario, especially when part descriptions vary in complexity 
+and semantic content.
+
+---
+
+### Improvements and Future Work:
+1. **Optimizing Performance**: Consider using model optimization techniques such as quantization or distillation to reduce the size and computational overhead of 
+                               transformer-based models like Sentence-BERT.
+2. **Leveraging GPU**: For larger datasets, it would be beneficial to run the models on machines with GPUs to significantly speed up the similarity calculation process.
+3. **Hybrid Methods**: A potential future improvement could involve a hybrid approach, where TF-IDF or Word2Vec is used for a quick first-pass search, followed by a 
+                       more accurate Sentence-BERT check for the top results.
+4. **Fine-tuning the Model**: Sentence-BERT could be fine-tuned on a dataset specifically related to part descriptions to improve the quality of the embeddings.
+
+---
+
+### Conclusion:
+By using three different similarity methods—**TF-IDF**, **Word2Vec**, and **Sentence-BERT**—we can compare the strengths and weaknesses of each and determine the 
+most appropriate one for finding alternative parts in a dataset. While TF-IDF is fast and simple, its lack of semantic understanding makes it less effective for 
+complex queries. Word2Vec provides better semantic understanding but still has limitations. 
+**Sentence-BERT** is the most accurate but computationally expensive, making it the best choice for accurate part similarity in this case.
+

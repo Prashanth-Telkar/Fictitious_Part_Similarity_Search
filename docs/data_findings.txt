@@ -1,0 +1,18 @@
+### Data Descriptive Analysis and Findings
+
+1. **Data Overview**:
+   - The dataset contains **998 rows** and **32 columns**, out of which the **DESCRIPTION** column is crucial for our analysis.
+   - The **DESCRIPTION** column has **335 missing (NaN) values**, which accounts for **33.56%** of the total rows.
+
+2. **Data Issues and Challenges**:
+   - **Missing Data in DESCRIPTION**:
+     - The **DESCRIPTION** column is created by combining values from the other columns. 
+       However, it was observed that when the **DESCRIPTION** column has missing values (NaN), almost all the other corresponding columns also contain missing values (NaN). 
+       This made it impossible to create the **DESCRIPTION** column from the other columns for those rows.
+     - Since the **DESCRIPTION** column is pivotal for the part similarity search, rows with missing descriptions were dropped from the dataset, resulting in a **33.56% loss in data**.
+  
+3. **Redundant Columns**:
+   - A closer inspection of the dataset revealed that some columns are **highly redundant** and contain similar information. For example:
+     - **Height, Length in mm, Physical Dimension, and Product Length** appear to convey overlapping details, making them unnecessary for the analysis.
+   - Dropping these redundant columns would help reduce the dimensionality of the dataset but it is not necessaru in this use case.
+   
