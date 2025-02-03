@@ -18,6 +18,7 @@ After comparing the results of each method, the best performing similarity metho
 Additionally, a Streamlit-powered **chatbot** is built that allows users to find similar parts based on their descriptions and engage in normal conversation. It utilizes a combination of the **Sentence-BERT model (all-MiniLM-L6-v2)** for part description embeddings and **GPT-2** for natural language conversation. Additionally, it uses the **FAISS** library for fast similarity searches in large datasets.
 
 ## Project Structure
+'''
 .
 ├── parts_data/
 │   └── Parts.csv                        # Input data containing part descriptions
@@ -32,7 +33,7 @@ Additionally, a Streamlit-powered **chatbot** is built that allows users to find
 ├── main.py                              # Main script to process and compute similar parts
 ├── docs/                                # Documentation folder
 └── README.md                            # Project documentation
-
+'''
 
 ### Folder Descriptions
 
