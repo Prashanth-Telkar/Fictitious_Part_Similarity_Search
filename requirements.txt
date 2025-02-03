@@ -1,0 +1,7 @@
+# python version : 3.11.9
+pandas==2.2.3
+scikit-learn==1.6.1
+gensim==4.3.3
+sentence-transformers==3.4.1
+streamlit==1.41.1
+faiss-cpu==1.10.0
